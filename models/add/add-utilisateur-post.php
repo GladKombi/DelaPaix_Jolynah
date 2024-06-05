@@ -1,39 +1,55 @@
 <?php
+#inclusion de la page de connexion
   include('../../connexion/connexion.php');
-
+  
+// creation de l'evenement sur le bouton valider
   if(isset($_POST['valider'])){
       $nom=htmlspecialchars($_POST['nom']);
-      $postnom=htmlspecialchars($_POST['postnom']);
-      $prenom=htmlspecialchars($_POST['prenom']);
-      $genre=htmlspecialchars($_POST['genre']);
-      $adresse=htmlspecialchars($_POST['adresse']);
-      $telephone=htmlspecialchars($_POST['telephone']);
-      $email=htmlspecialchars($_POST['email']);
-      $pwd=htmlspecialchars($_POST['pwd']);
-      $boutique=htmlspecialchars($_POST['boutique']);
       $fonction=htmlspecialchars($_POST['fonction']);
+      $telephone=htmlspecialchars($_POST['telephone']);
+      $password=htmlspecialchars($_POST['password']);
+      // password hashing
+      // $passwordh=$password;
+      // $passwordhacher=password_hash($passwordh, PASSWORD_DEFAULT);
+      // recuperer l'image
+      $photo=$_FILES['photo']['name'];
+      $upload="../../photo/".$photo;
+      move_uploaded_file($_FILES['photo']['tmp_name'],$upload);
 
-
-      #verifier si l'utilisateur existe ou pas dans la bd
-      $getBoutiqueUtilisateurs=$connexion->prepare("SELECT * FROM `utilisateur` WHERE telephone=? AND supprimer=?");
-      $getBoutiqueUtilisateurs->execute([$telephone, 0]);
-      $tab=$getBoutiqueUtilisateurs->fetch();
-        if($tab>0){
-        $_SESSION['msg']='cet Utlisateur existe dejà dans la base de données';//Cette variable recoit le message pour notifier l'utilisateur de l'opération qu'il deja fait
-        header("location:../../views/utilsateur.php");  
-      }else{ 
-        //Insertion data from database
-        $req=$connexion->prepare("INSERT INTO utilisateur ( nom, postnom, prenom, genre, adresse, telephone, email, pwd, boutique, fonction) values (?,?,?,?,?,?,?,?,?,?)");
-        $resultat=$req->execute([$nom,$postnom,$prenom,$genre,$adresse,$telephone,$email,$pwd,$boutique,$fonction]);
-        if($resultat==true){
-          $_SESSION['msg']="Enregistrement réussie";
+      // verification si la variable newimage a un element
+      if ($photo!=0) {
+        #verifier si l'utilisateur existe ou pas dans la bd
+        $getutil=$connexion->prepare("SELECT * FROM `user` WHERE telephone=? AND statut=?");
+        $getutil->execute([$telephone, 0]);
+        $tab=$getutil->fetch();
+        // verification si la variable tab est superieur à zéro
+          if($tab>0){
+          $_SESSION['msg']='cet Utlisateur existe dejà dans la base de données';//Cette variable recoit le message pour notifier l'utilisateur de l'opération qu'il deja fait
           header("location:../../views/utilisateur.php");
+          }else{
+            // verifier la validité du numero de télephone
+            if(is_numeric($telephone)){
+            //Insertion data from database
+            $req=$connexion->prepare("INSERT INTO user ( nom, fonction, telephone,pwd,photo) values (?,?,?,?,?)");
+            $resultat=$req->execute([$nom,$fonction,$telephone, $password,$photo]);
+            if($resultat==true){
+              $_SESSION['msg']="Enregistrement réussie";
+              header("location:../../views/utilisateur.php");
+            }
+            else{
+              $_SESSION['msg']="Echec d'enregistrement";
+              header("location:../../views/utilisateur.php");
+            }
+          }else{
+            $_SESSION['msg']="Le numero de téléphone ne doit pas être une chaîne de caractère";
+            header("location:../../views/utilisateur.php");
+          }
         }
-        else{
-          $_SESSION['msg']="Echec d'enregistrement";
-          header("location:../../views/utilisateur.php");
-        }
+      }else {
+        $_SESSION['msg']="Le format de l'image que vous avez choisi n'est pas autorisé";
+        header("location:../../views/utilisateur.php");
       }
+
   }else{
     header("location:../../views/utilisateur.php");
   }
