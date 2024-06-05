@@ -4,13 +4,13 @@
   if (isset($_GET['idSupcat']) && !empty($_GET['idSupcat'])) {
       $id=$_GET['idSupcat'];
       $supprimer=1;
-    $req=$connexion->prepare("UPDATE `user` SET statut=? WHERE id=?");
+    $req=$connexion->prepare("UPDATE `locataire` SET statut=? WHERE id=?");
     $resultat=$req->execute([$supprimer, $id]);
     if($resultat==true){
         $_SESSION['msg']= 'Suppression réussie';
-        header('location:../../views/utilisateur.php');
+        header('location:../../views/locataire.php');
       }
   }else{
-    header('location:../../views/utilisateur.php');
+    header('location:../../views/locataire.php');
   }
 ?>
