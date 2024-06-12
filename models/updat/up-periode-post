@@ -1,0 +1,33 @@
+<?php
+include('../../connexion/connexion.php');
+#modification
+if (isset($_POST['valider']) && !empty($_GET['idcat'])) {
+    $id = $_GET['idcat'];
+    $DateDebut = htmlspecialchars($_POST['DateDebut']);
+    $DateFin = htmlspecialchars($_POST['DateFin']);
+    $Montant = htmlspecialchars($_POST['Montant']);
+    $statut = 0;
+    #verifier si le client existe ou pas dans la bd
+    $getChambre = $connexion->prepare("SELECT * FROM `periode` WHERE `dateDebut`=? AND dateFin=? AND statut=?");
+    $getChambre->execute([$DateDebut, $DateFin, $statut]);
+    ($tab = $getChambre->fetch());
+    if ($tab > 0) {
+        $msg = 'Une Periode avec le même intervalle existe dejà dans la base de données !';
+        $_SESSION['msg'] = $msg;
+        header("location:../../views/periode.php");
+    } else {
+        $req = $connexion->prepare("UPDATE `periode` SET `dateDebut`=?, `dateFin`=?,`montant`=?  WHERE id='$id'");
+        $resultat = $req->execute([$description]);
+        #Si oui, la variable resultat va retourée true, donc il y a eu une modification
+        if ($resultat == true) {
+            $_SESSION['msg'] = "La modification a réussi";
+            header("location:../../views/catchambre.php");
+        } else {
+            $_SESSION['msg'] = "Echec de la modification";
+            header("location:../../views/catchambre.php");
+        }
+    }
+} else {
+    //Cette ligne permet de rediriger l'utiliseteur lors qu'il a pas cliquer sur le button qui sert à modifier
+    header("location:../../views/catchambre.php");
+}

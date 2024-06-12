@@ -1,3 +1,7 @@
+<?php
+    include '../connexion/connexion.php'; //Se connecter à la BD
+    require_once('../models/select/select-paiement.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,19 +34,70 @@
                 <!-- 1-3-block row start -->
                 <div class="row">
                     <?php
+                    if (isset($_SESSION['msg']) && !empty($_SESSION['msg'])) {
+                    ?>
+                        <div class="col-lg-12">
+                            <div class="alert-info alert text-center"><em><?= $_SESSION['msg'] ?></em></div>
+                        </div>
+                    <?php
+                    }
+                    unset($_SESSION['msg']);
                     if (isset($_GET['newPaiement'])) {
                     ?>
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-block">
-                                    <h3 class="text-center">Nouveau paiment</h3>
-                                    <form>                                      
+                                    <h3 class="text-center"><?= $title ?></h3>
+                                    <form action="<?= $url ?>" method="POST">
+                                        <div class="form-group">
+                                            <label for="exampleSelect1" class="form-control-label">Locataire</label>
+                                            <select required name="locataire" class="form-control " id="exampleSelect1">
+                                                <?php
+                                                   
+                                                    foreach ($_GetLoc as $_Loca) {
+                                                    ?> 
+                                                        <option value="<?= $_Loca[0] ?>"><b><?="N° ". $_Loca[6]?></b> <?= $_Loca[3]." ".$_Loca[4]." ".$_Loca[5]?></option>
+                                                    <?php
+                                                    }
+                                                ?>
+                                            </select>                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleSelect1" class="form-control-label">Periode</label>
+                                            <select required name="periode" class="form-control " id="exampleSelect1">
+                                                <?php
+                                                   
+                                                    foreach ($_GetPer as $_Per) {
+                                                    ?> 
+                                                        <option value="<?= $_Per[0] ?>"><?=$_Per[1]." / ".$_Per[2]?></option>
+                                                    <?php
+                                                    }
+                                                ?>
+                                            </select>                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="form-control-label">Montant </label>
+                                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="montant" placeholder="Ex: 520">
+                                        </div>
+                                        <button type="submit" class="btn btn-info w-100 waves-effect waves-light m-r-30"><?= $_btn ?></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    } else if (isset($_GET['idpaie'])) {
+                    ?>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h3 class="text-center"><?= $title ?></h3>
+                                    <form action="<?= $url ?>" method="POST">
                                         <div class="form-group">
                                             <label for="exampleSelect1" class="form-control-label">Locataire</label>
                                             <select class="form-control " id="exampleSelect1">
                                                 <option>Masika Mirera Jolynah</option>
                                                 <option>Nsele Gafura Lydia</option>
-                                                <option>Muhindo Kombi Glad</option>                                               
+                                                <option>Muhindo Kombi Glad</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -110,7 +165,7 @@
                                             <td>fevrier 2024</td>
                                             <td>500/<b>500$</b></td>
                                             <td>
-                                                <a href="" class="btn btn-sm btn-info">
+                                                <a href="paiement.php?idpaie=<?= $idperiode['id'] ?>" class="btn btn-sm btn-info">
                                                     <i class="bi bi-pen-fill"></i>
                                                 </a>
                                                 <a onclick=" return confirm('Voulez-vous vraiment supprimer ?')" href="#" class="btn btn-danger btn-sm mt-1">
@@ -121,7 +176,7 @@
                                         <tr>
                                             <td>1</td>
                                             <td>02 fevrier 2024</td>
-                                            <td>                                                
+                                            <td>
                                                 Masika
                                                 Mirera
                                                 Jolynah

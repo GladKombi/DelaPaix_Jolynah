@@ -2,15 +2,15 @@
 //la connexion a la base de données
 include_once('../../connexion/connexion.php');
 
-//la creation de l'evenement qui sert à envoyer les données à la base de données
-//Lors qu'on a cliquer sur le bouton valider
-
 if (isset($_POST['send'])) {
-    $_description = htmlspecialchars($_POST['description']);
-    $_montant = htmlspecialchars($_POST['montant']);
-    $_commande = htmlspecialchars($_POST['commande']);
+    $date=date('Y-m-d'); 
+    $locataire = htmlspecialchars($_POST['locataire']);
+    $periode = htmlspecialchars($_POST['periode']);
+    $montant = htmlspecialchars($_POST['montant']);
+    $statut=0;
+    $req = $connexion->prepare("SELECT periode.id,periode.dateDebut, periode.dateFin, periode.montant,affectation.Chambre, affectation.date,chambre.Categorie FROM periode,affectation,chambre,catchambre WHERE chambre.Categorie=catchambre.id AND affectation.Chambre=chambre.id AND affectation.id=? AND affectation.statut=?;");
+    $req->execute([$locataire,$statut]);
 
-    //la requete qui envoi les données de la base de données
     $req = $connexion->prepare("SELECT panier.quantite*panier.prix as montant from panier,commande where commande.id=panier.commande  and commande.id='$_commande'");
     $req->execute();
     $montrecup = 0;

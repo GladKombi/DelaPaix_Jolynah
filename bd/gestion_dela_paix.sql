@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2024 at 01:58 AM
+-- Generation Time: May 31, 2024 at 06:11 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,9 +42,17 @@ CREATE TABLE `affectation` (
 
 CREATE TABLE `catchambre` (
   `id` int(11) NOT NULL,
-  `description` int(11) NOT NULL,
+  `description` varchar(50) NOT NULL,
   `statut` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `catchambre`
+--
+
+INSERT INTO `catchambre` (`id`, `description`, `statut`) VALUES
+(1, 'Mono-portee', 0),
+(2, 'Double-porte', 0);
 
 -- --------------------------------------------------------
 
@@ -100,8 +108,17 @@ CREATE TABLE `paiement` (
 CREATE TABLE `periode` (
   `id` int(11) NOT NULL,
   `dateDebut` date NOT NULL,
-  `dateFin` date NOT NULL
+  `dateFin` date NOT NULL,
+  `montant` double NOT NULL,
+  `statut` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `periode`
+--
+
+INSERT INTO `periode` (`id`, `dateDebut`, `dateFin`, `montant`, `statut`) VALUES
+(1, '2024-02-01', '2024-06-30', 1500, 0);
 
 -- --------------------------------------------------------
 
@@ -171,7 +188,7 @@ ALTER TABLE `affectation`
 -- AUTO_INCREMENT for table `catchambre`
 --
 ALTER TABLE `catchambre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `chambre`
@@ -189,7 +206,7 @@ ALTER TABLE `paiement`
 -- AUTO_INCREMENT for table `periode`
 --
 ALTER TABLE `periode`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
