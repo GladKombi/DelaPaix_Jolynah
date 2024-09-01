@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="treeview">
-                <a class="waves-effect waves-dark" href="Chambre.php">
+                <a class="waves-effect waves-dark" href="Boutique.php">
                     <i class="bi bi-house-door"></i><span> Chambres</span>
                 </a>
             </li>

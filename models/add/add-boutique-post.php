@@ -1,40 +1,84 @@
 
 <?php
-    #script d'insertion des boutiques dans la base de données
+
     include('../../connexion/connexion.php');
+    // $lettre=range('A','Z');
+    // foreach($lettre as $alp){
+    //    $req=$connexion->prepare("INSERT INTO lettre (lettres) VALUES (?)");
+    //    $req->execute(array($alp));
+    // }
+     
+    if(isset($_POST['valider'])){        
+      $categorie=htmlspecialchars($_POST['categorie']);
+      $nombre=htmlspecialchars($_POST['nombre']);
+      $nombrre=htmlspecialchars($_POST['nombre']);
+      $initial=htmlspecialchars($_POST['initial']);
+      $req=$connexion->prepare("SELECT count(id) as nb from chambre  where numero like ?");
+      $req->execute(array("%" .$initial. "%"));
+      if($selBout=$req->fetch()){
+        $nbinitial=$selBout['nb'];
+       
+      }
+      else{
+        $nbinitial=0;
+      }
+      echo $nbinitial;
+      $test="AA";
+      // if(count_chars($test)==2)
+      // {
+      //    echo "2";
+      // }
+     
+      //  echo strlen($test);
+      // echo $bout."a";
+      $lettre=$initial;
+      $countInitial=$nbinitial;
+      
 
-    if(isset($_POST['valider'])){       
-        $description=htmlspecialchars($_POST['description']);
-        $adresse=htmlspecialchars($_POST['adresse']);
-        $nom=htmlspecialchars($_POST['nom']);
+      $numero="";
+      $nbinitial=$nbinitial+1;
+      $nombre=$nombre+$nbinitial;
+      $nb=0;
+      for($i=$nbinitial;$i<$nombre;$i++){
+        $nb=$nb+1;
+        $countInitial=$countInitial+1;
+        if($countInitial<33)
+        {
+          
+        
+              if(strlen($i)==1)
+              {
+                $zero="00";
+              }
+              else if(strlen($i)==2)
+              {
+                $zero="0";
+              }
+              
+              else{
+                $zero="";
+              }
+              $numero="$lettre$zero$i";
+              echo $numero.'</br>';
+            $req=$connexion->prepare("INSERT INTO chambre(numero,Categorie) VALUES(?,?)");
+            $req->execute(array($numero,$categorie));
 
-        #verifier si la boutique existe ou pas dans la bd
-        $statut=0;
-        $getBoutiqueDeplicant=$connexion->prepare("SELECT * FROM `boutique` WHERE nom=? AND statut=?");
-        $getBoutiqueDeplicant->execute([$nom, $statut]);
-        $tab=$getBoutiqueDeplicant->fetch();
-            if($tab>0){
-                $_SESSION['msg']='cette boutique existe dejà dans la base de données';//Cette variable recoit le message pour notifier l'utilisateur de l'opération qu'il deja fait
-                header("location:../../views/boutique.php");
+            if($nb==$nombrre)
+            {
+                $_SESSION['msg']="Enregistrement reussie";
+                header('location:../../views/boutique.php?AjoutBout');
+            
             }
-            else{
-                $sendDate=$connexion->prepare("INSERT INTO boutique VALUES (Null,?,?,?, 0)");
-                $resultat=$sendDate->execute([ $nom,$description,$adresse]);
-                if($resultat==true){
-                    $_SESSION['msg']="L'enregistrement réussi";
-                    header("location:../../views/boutique.php");
-                }
-                else{
-                    $_SESSION['msg']="Echec d'enregistrement";
-                    header("location:../../views/boutique.php");
-                }
-            }
-
-    } else{
-
-        /**
-         * Lors que  l'utilisateur n'a pas cliquer sur le button enregistrer, on va lui demandé de cliquer 
-         */
-        header("location:../../views/boutique.php");
+      }
+       else
+       {
+        $nb=$nb-1;
+        $_SESSION['msg']=" enregistrement reussi de $nb chambres  avec  l'initial $initial et vient d'attiendre la limite  ,choisissez un autre initial pour creer d'autres chambres";
+        $i=$nombre;
+        header('location:../../views/boutique.php?AjoutBout');
+      }
+      
+      }
+      echo $countInitial;
     }
 ?> 

@@ -11,7 +11,22 @@
 
         #Si oui, la variable resultat va retourée true, donc il y a eu un enregistrement
         if($resultat==true){
-            $_SESSION['msg']= "L'enreigistrement réussi";//Cette ligne permet d'ajouter un message dans la session Lors qu'il y a eu un enregistrement
+            $datepaiement=date('Y-m-d',strtotime($dateaffectation . '+30 days' ));
+            //Selection de l'affectation
+            $reqSel=$connexion->prepare("SELECT `id` FROM `affectation` WHERE locataire=? and chambre=?;");
+            $reqSel->execute(array($locataire,$Chambre,));
+            $Selection=$reqSel->fetch();
+            $idAffectation=$Selection[0];
+            //Selection du du montant
+            $reqMont=$connexion->prepare("SELECT montant FROM `prix` ORDER BY id DESC LIMIT 1;");
+            $reqMont->execute();
+            $idmontant=$reqMont->fetch();
+            $montant=$idmontant[0];
+
+            $reqet=$connexion->prepare("INSERT INTO `periode`(`affectation`, `dateDebut`, `dateFin`, `montant`, `statut`) values (?,?,?,?,?)" );
+            $resultat=$reqet->execute(array($idAffectation,$dateaffectation,$datepaiement,$montant,0));
+
+            $_SESSION['msg']= "L'enreigistrement réussi";
             header("location:../../views/Affectation.php?AjoutAffect");
         }
         else{
