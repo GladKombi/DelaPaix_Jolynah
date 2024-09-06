@@ -1,8 +1,14 @@
+<?php
+	include('../connexion/connexion.php');
+	if(isset($_GET['Rsponsable'])){
+		$idRespon=$_GET['Rsponsable'];
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<title>connexion</title>
+	<title>Connexion</title>
 	<!-- Meta -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
@@ -22,7 +28,7 @@
 
 				<div class="col-sm-12">
 					<div class="login-card card-block">
-						<form class="md-float-material">
+						<form class="md-float-material" >
 							<h3 class="text-center txt-primary">Se connecter</h3>
 							<div class="row">
 								<div class="col-md-12">
@@ -41,7 +47,7 @@
 							</div>
 							<div class="row">
 								<div class="col-xs-10 offset-xs-1">
-									<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
+									<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Connexion</button>
 								</div>
 							</div>
 							<!-- <div class="card-footer"> -->
