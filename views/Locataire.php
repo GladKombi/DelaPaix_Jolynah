@@ -51,7 +51,7 @@
                             <div class="card">
                                 <div class="card-block">
                                     <h3 class="text-center">Ajouter un Locataire</h3>
-                                     <!-- pour afficher les massage  -->
+                                    
                                         
                                     <form  action="<?=$url?>" method="POST" class="shadow p-3" enctype="multipart/form-data">
                                         <div class="form-group">

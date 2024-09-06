@@ -43,11 +43,12 @@ include 'connexion/connexion.php';
         <ul>
           <li><a href="#" class="active">Acceuil</a></li>
           <li><a href="#Apropos">Apropos</a></li>
-          <li><a href="#">Chambres disponibles</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#chambre">Chambres disponibles</a></li>
+          <li><a href="#contact">Contact</a></li>
           <li class="dropdown has-dropdown "><a href="#"><span class="btn-getstarted">Se connecter<i class="bi bi-chevron-down"></i></span> </a>
             <ul>
-              <li><a href="#">Glad</a></li>
+              <li><a href="views/login.php?Rsponsable">Responsanble de la galerie</a></li>
+              <li><a href="views/login.php?locat">Locataire</a></li>
             </ul>
           </li>
         </ul>
@@ -115,7 +116,7 @@ include 'connexion/connexion.php';
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Chambres disponibles</h2>
+        <h2 id="chambre">Chambres disponibles</h2>
         <p class="">Des chambres au choix</p>
       </div><!-- End Section Title -->
 
@@ -142,7 +143,7 @@ include 'connexion/connexion.php';
                 <img src="assetts/img/course-1.jpg" class="img-fluid" alt="...">
                 <div class="course-content">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a href="#">
+                    <a href="reserver.php?idReservation=<?= $Data['id'] ?>">
                       <p class="category">Reserver</p>
                     </a>
                     <p class="price">$<?=$montant?></p>
@@ -172,7 +173,7 @@ include 'connexion/connexion.php';
 
   <footer id="footer" class="footer position-relative">
 
-    <div class="container footer-top">
+    <div class="container footer-top" id="contact">
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
